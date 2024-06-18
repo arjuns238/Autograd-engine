@@ -1,4 +1,4 @@
-from Autograd import Value
+from autograd import Value
 from graph_utils import draw_dot
 import torch
 
