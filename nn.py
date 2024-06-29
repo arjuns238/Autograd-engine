@@ -20,7 +20,6 @@ class Linear:
                 n_features.append(Value(random.uniform(-1, 1)))
             w.append(n_features)
 
-        assert len(w) == self.in_features and len(w[0]) == self.out_features
 
         wx = [[Value(0) for _ in range(len(w[0]))] for _ in range(len(x))]
         print("wx shape", len(wx), len(wx[0]))
