@@ -13,7 +13,7 @@ def create_graph(root):
     return nodes, edges
 
 # Visualizing the graph
-def draw_dot(root, image_format = "png", rankdir = "BT"):
+def draw_dot(root, image_format = "png", rankdir = "LR"):
     nodes, edges = create_graph(root)
     dot = Digraph(format = image_format, graph_attr = {"rankdir": rankdir})
     for node in nodes:

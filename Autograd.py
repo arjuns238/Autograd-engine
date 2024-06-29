@@ -26,8 +26,9 @@ class Value:
         return out
         
     def __radd__(self, other):
-        return self + other
-        
+        if not isinstance(other, Value):
+            other = Value(other)
+        return other + self        
     def __mul__(self, other):
         if not isinstance(other, Value):
             other = Value(other)
@@ -41,7 +42,9 @@ class Value:
         return out
 
     def __rmul__(self, other):
-        return self * other
+        if not isinstance(other, Value):
+            other = Value(other)
+        return other * self
 
     def __sub__(self, other):
         if not isinstance(other, Value):
@@ -55,20 +58,42 @@ class Value:
         return out 
 
     def __rsub__(self, other):
-        return self - other
+        if not isinstance(other, Value):
+            other = Value(other)
+        return other - self
     
     def __pow__(self, other):
         assert isinstance(other, (int, float)), "only supporting int/float powers"
-        out = Value(self.data ** other, children = {self, other}, op = '*')
+        out = Value(self.data ** other, children = {self,}, op = f'**{other}')
         
         def _backward():
-            self.grad += other * (self.data ** (other - 1))  * out.grad
+            self.grad += other * (self.data ** (other - 1)) * out.grad
         out._backward = _backward
+        return out
+    
+    def log(self):
+        if self.data <= 0:
+            self.data = 1e-7
+        out = Value(math.log(self.data), children = {self, }, op = 'log')
+
+        def _backward():
+            self.grad += 1.0/(self.data) * out.grad
+        out._backward = _backward
+        return out 
+
+    def sigmoid(self):
+        num = 1.0 / (1.0 + math.exp(-1.0*self.data))
+        out = Value(num, children = {self, }, op = 'sigmoid')
+
+        def _backward():
+            self.grad += num * (1 - num) * out.grad
+        out._backward = _backward
+
         return out
 
     def tanh(self):
         num = (math.exp(2*self.data) - 1) / (math.exp(2*self.data) + 1)
-        out = Value(num, children = {self}, op = 'tanh')
+        out = Value(num, children = {self, }, op = 'tanh')
 
         def _backward():
             self.grad += (1.0 - num**2) * out.grad
@@ -78,7 +103,7 @@ class Value:
 
     def relu(self):
         out = self.data if self.data > 0 else 0
-        out = Value(out, children = {self}, op = 'ReLU')
+        out = Value(out, children = {self, }, op = 'ReLU')
 
         def _backward():
             deriv = 1 if self.data > 0 else 0 
