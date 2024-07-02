@@ -11,6 +11,7 @@ class Value:
         self.label = label
         self._backward = lambda: None
         self.grad = 0.0
+
     def __repr__(self):
         return f"Value(data={self.data} label = {self.label})"
         
@@ -29,6 +30,7 @@ class Value:
         if not isinstance(other, Value):
             other = Value(other)
         return other + self        
+    
     def __mul__(self, other):
         if not isinstance(other, Value):
             other = Value(other)

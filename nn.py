@@ -2,7 +2,12 @@ from autograd import Value
 from graph_utils import draw_dot
 import random
 
-class Neuron:
+class Module:
+    def zero_grad(self):
+        for p in self.parameters():
+            p.grad = 0.0
+
+class Neuron(Module):
     def __init__(self, nin, activation = 'relu'):
         self.nin = nin
         self.w = [Value(random.uniform(-1, 1)) for _ in range(nin)]
@@ -24,7 +29,7 @@ class Neuron:
         return self.w + [self.b]
 
 
-class Linear:
+class Linear(Module):
     def __init__(self, in_features, out_features, activation = 'relu'):
         self.in_features = in_features
         self.out_features = out_features
@@ -43,7 +48,7 @@ class Linear:
             p.extend(n.parameters())
         return p 
     
-class MLP:
+class MLP(Module):
     def __init__(self, nin, nouts):
         sz = [nin] + nouts
         self.layers = [Linear(sz[i], sz[i+1], 'sigmoid') for i in range(len(nouts))]
