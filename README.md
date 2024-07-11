@@ -19,4 +19,6 @@ print(f'{e.grad}') # the gradient gets populated (1.0)
 ```
 <h2> Training a deep neural net </h2>
 
-the demo of a deep neural net is show in use_case.ipynb. The neural net is trained on a sample dataset to perform binary classification. This is done by initializing a neural networks from the autograd.nn module and using the binary cross entropy loss and the stochastic gradient descent algorithm (SGD). These were the final results
+The demo of a deep neural net is show in use_case.ipynb. The neural net was trained on a sample dataset to perform binary classification. This is done by initializing a neural network from the autograd.nn module and using the binary cross entropy loss and stochastic gradient descent algorithm (SGD). These were the final results:
+
+![Alt text](finalimage.png)
