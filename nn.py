@@ -47,19 +47,3 @@ class Linear(Module):
         for n in self.neurons:
             p.extend(n.parameters())
         return p 
-    
-class MLP(Module):
-    def __init__(self, nin, nouts):
-        sz = [nin] + nouts
-        self.layers = [Linear(sz[i], sz[i+1], 'sigmoid') for i in range(len(nouts))]
-
-    def __call__(self, x):
-        for layer in self.layers:
-            x = layer(x)
-        return x[0] if len(x) == 1 else x
-
-    def parameters(self):
-        return [p for layer in self.layers for p in layer.parameters()]
-
-    def __repr__(self):
-        return f"MLP of [{', '.join(str(layer) for layer in self.layers)}]"
