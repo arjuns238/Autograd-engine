@@ -48,24 +48,3 @@ class SimpleNN:
         for l in self.layers:
             p.extend(l.parameters())
         return p
-# network = SimpleNN(2, 2, 1)
-# print("n parameters", len(network.parameters()))
-# x = [2.0, 3.0]
-# ys = 1
-# out = network(x)
-# print(out)
-# loss = (ys - out) ** 2
-# loss.backward()
-# for p in network.parameters():
-#     p = p-0.02*p.grad
-# draw_dot(out).view()
-x = [2.0, 3.0, -1]
-ys = 1
-n = MLP(3, [4,4,1])
-out = n(x)
-print(out)
-loss = (ys - out) ** 2
-loss.backward()
-for p in n.parameters():
-    p = p-0.02*p.grad
-draw_dot(out).view()
