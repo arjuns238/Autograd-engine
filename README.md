@@ -11,7 +11,6 @@ b = a * 20
 c = b ** 2
 d = (c - 4)/3
 e = d.relu()
-print('hiiii')
 print(f'{e.data}') # prints value of e (13332.0)
 print(f'{e.grad}') # prints 0.0 since grad is currently 0
 e.backward()
